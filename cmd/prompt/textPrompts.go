@@ -12,6 +12,10 @@ func Validate(input string) error {
 	return nil
 }
 
+func IgnoreValidation(input string) error {
+	return nil
+}
+
 func CreatePrompt(label string, v func(string) error) *promptui.Prompt {
 
 	prompt := promptui.Prompt{

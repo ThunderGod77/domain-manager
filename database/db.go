@@ -192,3 +192,27 @@ func GetKey(provider string) (*ProviderKeys, error) {
 		Secret:    val.Secret,
 	}, nil
 }
+
+func GetCredentials(domain string) (*ProviderKeys, error) {
+	domains, err := GetDomains()
+	if err != nil {
+		return nil, err
+	}
+
+	domainData, ok := domains[domain]
+	if !ok {
+		return nil, err
+	}
+	providers, err := GetProviders()
+	if err != nil {
+		return nil, err
+	}
+	providerData, ok := providers[domainData.Provider]
+	if !ok {
+		return nil, err
+	}
+
+	accessKey := providerData.AccessKey
+	secret := providerData.Secret
+	return &ProviderKeys{AccessKey: accessKey, Secret: secret}, nil
+}
