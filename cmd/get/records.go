@@ -27,7 +27,7 @@ to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		providerData, err := database.GetCredentials(domain)
 		if err != nil {
-			log.Println("failed to get records", err)
+			log.Println("failed to get credentials", err)
 			return
 		}
 		records, err := goDaddy.GetRecords(providerData.AccessKey, providerData.Secret, recordType, recordName, domain)
@@ -48,8 +48,10 @@ to quickly create a Cobra application.`,
 func init() {
 	getCmd.AddCommand(recordsCmd)
 	recordsCmd.Flags().StringVarP(&domain, "domain", "d", "", "domain name to look records for")
+	recordsCmd.MarkFlagRequired("domain")
 	recordsCmd.Flags().StringVar(&recordType, "type", "", "record types to get")
 	recordsCmd.Flags().StringVar(&recordName, "name", "", "record name to get")
+
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command

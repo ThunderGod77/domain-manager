@@ -12,7 +12,7 @@ import (
 
 type InputRecord struct {
 	Data     string  `json:"data"`
-	Name     string  `json:"name"`
+	Name     string  `json:"name,omitempty"`
 	Port     int     `json:"port"`
 	Priority int     `json:"priority"`
 	Protocol string  `json:"protocol"`
@@ -103,6 +103,39 @@ func AddRecord(accessKey, secret, domain, data, name, recordType string, weight 
 	}
 	return nil
 
+}
+
+func UpdateRecord(accessKey, secret, recordType, name, domain, data string, weight float64, ttl, priority int) error {
+	if recordType == "" || domain == "" || name == "" {
+		return errors.New("please enter a valid record type,name or domain")
+	}
+	var url = baseUrl + "/domains/" + domain + "/records/" + recordType + "/" + name
+	var ir = InputRecord{
+		Data:     data,
+		Port:     65535,
+		Priority: priority,
+		Protocol: "",
+		Service:  "",
+		Ttl:      ttl,
+		Type:     recordType,
+		Weight:   weight,
+	}
+	marshal, err := json.Marshal(ir)
+	if err != nil {
+		return err
+	}
+	req, err := http.NewRequest("PUT", url, bytes.NewBuffer(marshal))
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", fmt.Sprintf("sso-key %s:%s", accessKey, secret))
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	if resp.Status != http.StatusText(http.StatusOK) {
+		return errors.New("some error occurred")
+	}
+	return nil
 }
 
 func DeleteRecord(accessKey, secret, recordType, name, domain string) error {

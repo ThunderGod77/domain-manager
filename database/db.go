@@ -59,6 +59,10 @@ func updateDb(domains map[string]Domain) error {
 	return nil
 }
 
+func DeleteDomain(domain string) error {
+
+}
+
 func AddDomain(domainName, provider, description string) error {
 	domains, err := GetDomains()
 	if err != nil {
@@ -148,6 +152,23 @@ func updateProviderKeys(providers map[string]ProviderKeys) error {
 	}
 
 	err = os.WriteFile("./provider.json", marshal, 0644)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func DeleteProvider(provider string) error {
+	providers, err := GetProviders()
+	if err != nil {
+		return err
+	}
+	_, ok := providers[provider]
+	if !ok {
+		return errors.New("provider does not exist")
+	}
+	delete(providers, provider)
+	err = updateProviderKeys(providers)
 	if err != nil {
 		return err
 	}
