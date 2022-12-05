@@ -58,8 +58,8 @@ func init() {
 
 	recordCmd.Flags().StringVarP(&domain, "domain", "d", "", "domain name to look records for")
 	recordCmd.MarkFlagRequired("domain")
-	recordCmd.Flags().StringVarP(&recordType, "record type", "r", "", "record type")
-	recordCmd.Flags().StringVarP(&recordName, "record name", "n", "", "record name")
+	recordCmd.Flags().StringVarP(&recordType, "type", "r", "", "record type")
+	recordCmd.Flags().StringVarP(&recordName, "name", "n", "", "record name")
 
 	// Here you will define your flags and configuration settings.
 

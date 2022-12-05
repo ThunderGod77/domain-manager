@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	_ "github.com/joho/godotenv/autoload"
+	"log"
 	"net/http"
 	"os"
 )
@@ -29,6 +30,17 @@ type Record struct {
 	Name string `json:"name"`
 	Ttl  int    `json:"ttl"`
 	Type string `json:"type"`
+}
+
+type GDResponse struct {
+	Code   int `json:"code"`
+	Fields []struct {
+		Code        string `json:"code"`
+		Message     string `json:"message"`
+		Path        string `json:"path"`
+		PathRelated string `json:"pathRelated"`
+	} `json:"fields"`
+	Message string `json:"message"`
 }
 
 func GetEnv() (string, string, string) {
@@ -71,7 +83,7 @@ func GetRecords(accessKey, secret, recordType, name, domain string) ([]Record, e
 }
 
 func AddRecord(accessKey, secret, domain, data, name, recordType string, weight float64, ttl, priority int) error {
-	var url = baseUrl + "domains/" + domain + "/records"
+	var url = baseUrl + "/domains/" + domain + "/records"
 	var ir = InputRecord{
 		Data:     data,
 		Name:     name,
@@ -83,14 +95,17 @@ func AddRecord(accessKey, secret, domain, data, name, recordType string, weight 
 		Type:     recordType,
 		Weight:   weight,
 	}
-	marshal, err := json.Marshal(ir)
+	log.Println(domain)
+	marshal, err := json.Marshal([]InputRecord{ir})
 	if err != nil {
 		return err
 	}
+	log.Println(string(marshal))
 	req, err := http.NewRequest("PATCH", url, bytes.NewBuffer(marshal))
 	if err != nil {
 		return err
 	}
+	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("Authorization", fmt.Sprintf("sso-key %s:%s", accessKey, secret))
 	client := &http.Client{}
@@ -98,8 +113,15 @@ func AddRecord(accessKey, secret, domain, data, name, recordType string, weight 
 	if err != nil {
 		return err
 	}
-	if resp.Status != http.StatusText(http.StatusOK) {
-		return errors.New("some error occurred")
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		var gdr GDResponse
+		err := json.NewDecoder(resp.Body).Decode(&gdr)
+		if err != nil {
+			return err
+		}
+
+		return errors.New(gdr.Message)
 	}
 	return nil
 
@@ -120,20 +142,32 @@ func UpdateRecord(accessKey, secret, recordType, name, domain, data string, weig
 		Type:     recordType,
 		Weight:   weight,
 	}
-	marshal, err := json.Marshal(ir)
+	marshal, err := json.Marshal([]InputRecord{ir})
 	if err != nil {
+
 		return err
 	}
 	req, err := http.NewRequest("PUT", url, bytes.NewBuffer(marshal))
 	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
 	req.Header.Set("Authorization", fmt.Sprintf("sso-key %s:%s", accessKey, secret))
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
 		return err
 	}
-	if resp.Status != http.StatusText(http.StatusOK) {
-		return errors.New("some error occurred")
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		var gdr GDResponse
+
+		err := json.NewDecoder(resp.Body).Decode(&gdr)
+
+		if err != nil {
+
+			return err
+		}
+
+		return errors.New(gdr.Message)
 	}
 	return nil
 }
@@ -155,7 +189,17 @@ func DeleteRecord(accessKey, secret, recordType, name, domain string) error {
 		return err
 	}
 	if resp.StatusCode != 204 {
-		return errors.New("some error occurred")
+		var gdr GDResponse
+
+		err := json.NewDecoder(resp.Body).Decode(&gdr)
+
+		if err != nil {
+
+			return err
+		}
+
+		return errors.New(gdr.Message)
+
 	}
 	return nil
 

@@ -69,8 +69,8 @@ func init() {
 
 	recordCmd.Flags().StringVarP(&domain, "domain", "d", "", "domain name to look records for")
 	recordCmd.MarkFlagRequired("domain")
-	recordCmd.Flags().StringVarP(&recordType, "record type", "r", "", "record type")
-	recordCmd.Flags().StringVarP(&recordName, "record name", "n", "", "record name")
+	recordCmd.Flags().StringVarP(&recordType, "type", "r", "", "record type")
+	recordCmd.Flags().StringVarP(&recordName, "name", "n", "", "record name")
 
 	recordCmd.Flags().StringVar(&data, "data", "", "value of the dns record")
 

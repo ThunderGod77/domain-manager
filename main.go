@@ -8,6 +8,7 @@ import (
 	_ "github.com/ThunderGod77/domain-manager/cmd/delete"
 	_ "github.com/ThunderGod77/domain-manager/cmd/get"
 	_ "github.com/ThunderGod77/domain-manager/cmd/new"
+	_ "github.com/ThunderGod77/domain-manager/cmd/update"
 )
 
 func main() {
