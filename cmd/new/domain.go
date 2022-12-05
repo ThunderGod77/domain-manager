@@ -16,12 +16,7 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 var domainCmd = &cobra.Command{
 	Use:   "domain",
 	Short: "adds a domain",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Long:  `Adds a new domain,the domain is stored locally with the cli application.Requires use to enter the domain name,provider(currently only supports go daddy) and description.All the data is stored locally in plaintext format.`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		domainPrompt := prompt.CreatePrompt("Domain Name", prompt.Validate)

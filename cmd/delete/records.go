@@ -16,13 +16,8 @@ import (
 // recordCmd represents the record command
 var recordCmd = &cobra.Command{
 	Use:   "record",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "deletes the dns record",
+	Long:  `Deletes the dns record of a particular domain.Domain should already be registered along with it's domain registrar(provider) api keys.Required flags 'domain'`,
 	Run: func(cmd *cobra.Command, args []string) {
 		providerData, err := database.GetCredentials(domain)
 		if err != nil {

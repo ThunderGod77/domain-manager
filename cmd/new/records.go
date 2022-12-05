@@ -16,13 +16,8 @@ import (
 // recordCmd represents the record command
 var recordCmd = &cobra.Command{
 	Use:   "record",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "add a new dns record to your domain",
+	Long:  `Adds a new dns record to your domain name.Required flags - 'domain'.Optional flags = 'type'(record type of your dns record),'name'(record name of your dns record),'data'(value of the dns record - defaults to 3600),'ttl'(ttl of the dns record),'weight'(weight of the dns record - defaults to 1)`,
 	Run: func(cmd *cobra.Command, args []string) {
 		providerData, err := database.GetCredentials(domain)
 		if err != nil {
@@ -74,13 +69,13 @@ func init() {
 
 	recordCmd.Flags().StringVarP(&domain, "domain", "d", "", "domain name to look records for")
 	recordCmd.MarkFlagRequired("domain")
-	recordCmd.Flags().StringVarP(&recordType, "record type", "r", "", "record type")
-	recordCmd.Flags().StringVarP(&recordName, "record name", "n", "", "record name")
+	recordCmd.Flags().StringVarP(&recordType, "type", "t", "", "record type")
+	recordCmd.Flags().StringVarP(&recordName, "name", "n", "", "record name")
 
 	recordCmd.Flags().StringVar(&data, "data", "", "value of the dns record")
 
 	recordCmd.Flags().IntVar(&ttl, "ttl", 3600, "ttl of dns record")
-	recordCmd.Flags().Float64Var(&weight, "weight", 0, "weight of dns record")
+	recordCmd.Flags().Float64Var(&weight, "weight", 1, "weight of dns record")
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command

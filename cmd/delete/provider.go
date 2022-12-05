@@ -12,13 +12,8 @@ import (
 // providerCmd represents the provider command
 var providerCmd = &cobra.Command{
 	Use:   "provider",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Delete a domain provider",
+	Long:  `Deletes the domain registrar and it's api keys(access key and secret) stored with the cli.Required flags 'provider'`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if provider == "" {
 			fmt.Println("please provide a valid registrar")

@@ -17,13 +17,8 @@ var recordName string
 // domainsCmd represents the domains command
 var recordsCmd = &cobra.Command{
 	Use:   "records",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Get dns records of a domain",
+	Long:  `Gets all the dns records of a domain,the domain should already be registered along with it's provider.Required flags - 'domain'.Options flags - 'type'(record type of a dns record),'name'(record name of a dns record).Returns the record name,record type,record value and ttl of the record`,
 	Run: func(cmd *cobra.Command, args []string) {
 		providerData, err := database.GetCredentials(domain)
 		if err != nil {

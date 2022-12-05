@@ -14,13 +14,8 @@ import (
 // domainsCmd represents the domains command
 var domainsCmd = &cobra.Command{
 	Use:   "domains",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Get all the domains registered with the cli.",
+	Long:  `Get all the domains registered with the cli application - domain name,registrar and description`,
 	Run: func(cmd *cobra.Command, args []string) {
 		domains, err := database.GetDomains()
 		if err != nil {

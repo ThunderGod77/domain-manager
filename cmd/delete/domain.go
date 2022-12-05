@@ -12,13 +12,8 @@ import (
 // domainCmd represents the domain command
 var domainCmd = &cobra.Command{
 	Use:   "domain",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Deletes a domain",
+	Long:  `This command is used to delete domain locally stored with your cli application.Required flags 'domain'`,
 	Run: func(cmd *cobra.Command, args []string) {
 		err := database.DeleteDomain(domainName)
 		if err != nil {
