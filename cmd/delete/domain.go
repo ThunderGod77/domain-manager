@@ -5,7 +5,7 @@ package delete
 
 import (
 	"fmt"
-
+	"github.com/ThunderGod77/domain-manager/database"
 	"github.com/spf13/cobra"
 )
 
@@ -20,12 +20,20 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("domain called")
+		err := database.DeleteDomain(domainName)
+		if err != nil {
+			fmt.Println("could not delete domain", err)
+			return
+		}
+		fmt.Println("successfully deleted the domain")
 	},
 }
+var domainName string
 
 func init() {
 	deleteCmd.AddCommand(domainCmd)
+	domainCmd.Flags().StringVarP(&domainName, "domain", "d", "", "domain name to be deleted")
+	recordCmd.MarkFlagRequired("domain")
 
 	// Here you will define your flags and configuration settings.
 

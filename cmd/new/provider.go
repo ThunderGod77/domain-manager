@@ -69,6 +69,7 @@ to quickly create a Cobra application.`,
 		if err != nil {
 			fmt.Println("could not save credentials", err)
 		}
+		fmt.Println("Successfully stored credentials")
 	},
 }
 

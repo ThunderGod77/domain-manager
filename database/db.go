@@ -60,7 +60,21 @@ func updateDb(domains map[string]Domain) error {
 }
 
 func DeleteDomain(domain string) error {
+	domains, err := GetDomains()
+	if err != nil {
+		return err
+	}
+	_, pres := domains[domain]
+	if !pres {
+		return errors.New("domain does not exist")
 
+	}
+	delete(domains, domain)
+	err = updateDb(domains)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func AddDomain(domainName, provider, description string) error {
