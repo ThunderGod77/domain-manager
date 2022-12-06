@@ -4,9 +4,9 @@ Supports only godaddy.
 
 To install for ubuntu- 
 ```
-    wget https://github.com/ThunderGod77/domain-manager/releases/download/v0.1.2/domain-manager_0.1.2_Linux_x86_64.tar.gz
+    wget https://github.com/ThunderGod77/domain-manager/releases/download/v0.1.2/domain-manager_0.1.3_Linux_x86_64.tar.gz
     
-    sudo tar -C /usr/local/bin -xzf domain-manager_0.1.2_Linux_x86_64.tar.gz
+    sudo tar -C /usr/local/bin -xzf domain-manager_0.1.3_Linux_x86_64.tar.gz
     
     sudo chmod +x /usr/local/bin/domain-manager
 ```
