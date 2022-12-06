@@ -13,7 +13,7 @@ import (
 // deleteCmd represents the delete command
 var deleteCmd = &cobra.Command{
 	Use:   "delete",
-	Short: "Parent command to delete domain,provider of dns record",
+	Short: "Parent command to delete domain,provider or dns record",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("delete called")

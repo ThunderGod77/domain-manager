@@ -11,14 +11,9 @@ import (
 
 // rootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
-	Use:   "domain-manager",
-	Short: "A brief description of youfr application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Use:   "domain-manager root command",
+	Short: "This cli application allow you to manage dns records for your domains - currently only supports godaddy",
+	Long:  `The cli has following sub commands - get,new,delete and update.To configure your api credentials for godaddy,please visit https://developer.godaddy.com/getstarted(please use the production keys.)`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
