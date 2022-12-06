@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	_ "github.com/joho/godotenv/autoload"
-	"log"
 	"net/http"
 	"os"
 )
@@ -34,6 +33,16 @@ type Record struct {
 
 type GDResponse struct {
 	Code   int `json:"code"`
+	Fields []struct {
+		Code        string `json:"code"`
+		Message     string `json:"message"`
+		Path        string `json:"path"`
+		PathRelated string `json:"pathRelated"`
+	} `json:"fields"`
+	Message string `json:"message"`
+}
+type GDResponseGet struct {
+	Code   string `json:"code"`
 	Fields []struct {
 		Code        string `json:"code"`
 		Message     string `json:"message"`
@@ -74,7 +83,17 @@ func GetRecords(accessKey, secret, recordType, name, domain string) ([]Record, e
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		var gdr GDResponseGet
+		err := json.NewDecoder(resp.Body).Decode(&gdr)
+		if err != nil {
+			return nil, err
+		}
+
+		return nil, errors.New(gdr.Message)
+	}
 	var r []Record
+
 	err = json.NewDecoder(resp.Body).Decode(&r)
 	if err != nil {
 		return nil, err
@@ -95,12 +114,12 @@ func AddRecord(accessKey, secret, domain, data, name, recordType string, weight 
 		Type:     recordType,
 		Weight:   weight,
 	}
-	log.Println(domain)
+	//log.Println(domain)
 	marshal, err := json.Marshal([]InputRecord{ir})
 	if err != nil {
 		return err
 	}
-	log.Println(string(marshal))
+	//log.Println(string(marshal))
 	req, err := http.NewRequest("PATCH", url, bytes.NewBuffer(marshal))
 	if err != nil {
 		return err
@@ -115,7 +134,7 @@ func AddRecord(accessKey, secret, domain, data, name, recordType string, weight 
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		var gdr GDResponse
+		var gdr GDResponseGet
 		err := json.NewDecoder(resp.Body).Decode(&gdr)
 		if err != nil {
 			return err
@@ -158,7 +177,7 @@ func UpdateRecord(accessKey, secret, recordType, name, domain, data string, weig
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		var gdr GDResponse
+		var gdr GDResponseGet
 
 		err := json.NewDecoder(resp.Body).Decode(&gdr)
 

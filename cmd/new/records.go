@@ -42,7 +42,7 @@ var recordCmd = &cobra.Command{
 		}
 		if data == "" {
 			dPrompt := prompt.CreatePrompt("Record Data ", prompt.Validate)
-			recordName, err = dPrompt.Run()
+			data, err = dPrompt.Run()
 			if err != nil {
 				fmt.Printf("Prompt failed %v\n", err)
 				return

@@ -58,7 +58,7 @@ var providerCmd = &cobra.Command{
 			return
 		}
 		if skResult == "" {
-			akResult = providerData.Secret
+			skResult = providerData.Secret
 		}
 		err = database.AddProvider(providerResult, akResult, skResult)
 		if err != nil {
