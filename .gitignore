@@ -3,3 +3,4 @@
 main
 domain.json
 provider.json
+dist/
